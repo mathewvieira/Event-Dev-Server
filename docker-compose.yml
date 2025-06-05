@@ -1,0 +1,39 @@
+services:
+  app:
+    image: node:24-bookworm-slim
+    container_name: ed_node
+    working_dir: /usr/src/app
+    ports:
+      - '${NODE_PORT}:${NODE_PORT}'
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${NODE_PORT}
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    command: >
+      sh -c "
+        npm install &&
+        npx prisma generate &&
+        npx prisma migrate deploy &&
+        npm run dev
+      "
+
+  db:
+    image: postgres:17.5-bookworm
+    container_name: ed_postgres
+    restart: always
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ed_db_data:/var/lib/postgresql/data
+
+volumes:
+  ed_db_data:
