@@ -1,0 +1,28 @@
+{
+  "name": "event-dev-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch src --exec node src/index.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathewvieira/Event-Dev-Server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathewvieira/Event-Dev-Server/issues"
+  },
+  "homepage": "https://github.com/mathewvieira/Event-Dev-Server#readme",
+  "description": "",
+  "dependencies": {
+    "@dbml/cli": "^3.13.5",
+    "@prisma/client": "^6.9.0",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "prisma": "^6.9.0"
+  }
+}
