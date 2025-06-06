@@ -1,9 +1,12 @@
 {
   "name": "event-dev-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon --watch src --exec node src/index.js "
+    "dev": "nodemon --watch src --exec \"node src/index.js\"",
+    "start": "node src/index.js",
+    "make:db": "npx -p @dbml/cli@3.13.5 dbml2sql db/docs/gt.schema.dbml -o db/out/gt.schema.sql --postgres && mv dbml-error.log db/out/gt.error.log"
   },
   "repository": {
     "type": "git",
@@ -18,8 +21,11 @@
   "homepage": "https://github.com/mathewvieira/Event-Dev-Server#readme",
   "description": "",
   "dependencies": {
-    "@dbml/cli": "^3.13.5",
     "@prisma/client": "^6.9.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10"
   },
   "devDependencies": {
