@@ -1,32 +1,27 @@
-import dotenv from 'dotenv'
-import express, { json } from 'express'
-import { PrismaClient } from '@prisma/client'
+import express from 'express'
 
-dotenv.config()
+import { API_MAX_VERSION, API_MIN_VERSION } from './shared/consts/apiConsts.js'
 
-async function findMany() {
-  const comunidades = await prisma.comunidade.findMany()
-  console.log(comunidades)
+import apiRouter from './routes/api.Routes.js'
+import getApiPath from './shared/utils/api.Utils.js'
+import stampMiddleware from './middlewares/stamp.Middleware.js'
+import './shared/utils/pool.Utils.js'
+
+BigInt.prototype.toJSON = function () {
+  return this.toString()
 }
 
 const PORT = process.env.NODE_PORT
 
-const prisma = new PrismaClient()
 const app = express()
-app.use(json())
 
-app.get('/', (_req, res) => {
-  res.send('Hello World!!')
-})
+app.use(express.json())
+
+app.use(stampMiddleware)
+
+app.use(getApiPath(API_MIN_VERSION, API_MAX_VERSION), apiRouter)
 
 app.listen(PORT, async () => {
   console.log(`(🏃) Running... (http://localhost:${PORT})`)
-  try {
-    console.log('(💯) Conexão estabelecida!')
-    await findMany()
-  } catch (err) {
-    console.log('Erro ao se conectar com o banco', err)
-  } finally {
-    await prisma.$disconnect()
-  }
+  console.log('(💯) Conexão estabelecida!')
 })
