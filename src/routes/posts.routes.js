@@ -1,9 +1,12 @@
 import express from 'express'
-
-import comunidadesController from '../controllers/comunidades.controller.js'
+import PostsController from '../controllers/posts.controller.js'
 
 const postsRouter = express.Router()
 
-postsRouter.get('/', comunidadesController.index)
+postsRouter.get('/', PostsController.index)
+postsRouter.get('/:id', PostsController.show)
+postsRouter.post('/', PostsController.store)
+postsRouter.patch('/:id', PostsController.update)
+postsRouter.delete('/:id', PostsController.destroy)
 
 export default postsRouter

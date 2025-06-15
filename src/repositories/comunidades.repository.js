@@ -45,7 +45,6 @@ class ComunidadesRepository {
 
   async update(id, comunidadeUpdateDTO, apenasAtivos = true) {
     try {
-      console.log(comunidadeUpdateDTO.toUpdateData())
       const comunidade = await pool.comunidade.update({
         where: { id, ativo: apenasAtivos },
         data: comunidadeUpdateDTO.toUpdateData()
