@@ -16,6 +16,7 @@ const app = express()
 
 app.use(express.json())
 
+
 app.use(stampMiddleware)
 
 app.use(getApiPath(API_MIN_VERSION, API_MAX_VERSION), apiRouter)

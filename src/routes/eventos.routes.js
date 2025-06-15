@@ -1,9 +1,13 @@
 import express from 'express'
 
-import comunidadesController from '../controllers/comunidades.controller.js'
+import EventosController from '../controllers/eventos.controller.js'
 
 const eventosRouter = express.Router()
 
-eventosRouter.get('/', comunidadesController.index)
+eventosRouter.get('/', EventosController.index)
+eventosRouter.post('/', EventosController.create)
+eventosRouter.get('/:id', EventosController.getById)
+eventosRouter.put('/:id', EventosController.update)
+eventosRouter.delete('/:id', EventosController.delete)
 
 export default eventosRouter

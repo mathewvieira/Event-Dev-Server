@@ -13,7 +13,7 @@ const defaultsComunidade = () => ({
 })
 
 const insertableFieldsComunidade = [
-  'nome',
+  'titulo',
   'descricao',
   'logo_url',
   'telefone',

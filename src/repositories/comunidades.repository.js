@@ -1,4 +1,4 @@
-import pool from '../shared/utils/pool.utils.js'
+import pool from '../shared/utils/pool.Utils.js'
 
 import { ComunidadeResponseDTO } from '../dtos/comunidades.dto.js'
 
@@ -45,7 +45,6 @@ class ComunidadesRepository {
 
   async update(id, comunidadeUpdateDTO, apenasAtivos = true) {
     try {
-      console.log(comunidadeUpdateDTO.toUpdateData())
       const comunidade = await pool.comunidade.update({
         where: { id, ativo: apenasAtivos },
         data: comunidadeUpdateDTO.toUpdateData()
