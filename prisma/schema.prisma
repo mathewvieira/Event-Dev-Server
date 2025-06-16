@@ -17,8 +17,9 @@ model comunidade {
   link_linkedin  String?   @db.VarChar(255)
   link_website   String?   @db.VarChar(255)
   link_github    String?   @db.VarChar(255)
+  ativo          Boolean   @default(true) @db.Boolean
+  atualizado_em  DateTime? @db.Timestamp(6)
   criado_em      DateTime  @default(now()) @db.Timestamp(6)
-  atualizado_em  DateTime  @db.Timestamp(6)
   evento         evento[]
   post           post[]
   usuario        usuario[]
@@ -38,8 +39,9 @@ model evento {
   cep               String?    @db.VarChar(255)
   link              String?    @db.VarChar(255)
   evento_online     Boolean?   @default(false)
+  ativo             Boolean    @default(true) @db.Boolean
+  atualizado_em     DateTime?  @db.Timestamp(6)
   criado_em         DateTime   @default(now()) @db.Timestamp(6)
-  atualizado_em     DateTime   @db.Timestamp(6)
   comunidade        comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -47,8 +49,9 @@ model post {
   id            BigInt     @id @default(autoincrement())
   id_comunidade BigInt
   texto         String     @db.VarChar(255)
+  ativo         Boolean    @default(true) @db.Boolean
+  atualizado_em DateTime?  @db.Timestamp(6)
   criado_em     DateTime   @default(now()) @db.Timestamp(6)
-  atualizado_em DateTime   @db.Timestamp(6)
   comunidade    comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -59,7 +62,8 @@ model usuario {
   senha         String      @db.VarChar(255)
   funcao        String      @db.VarChar(255)
   usuario_root  Boolean?    @default(false)
+  ativo         Boolean     @default(true) @db.Boolean
+  atualizado_em DateTime?   @db.Timestamp(6)
   criado_em     DateTime    @default(now()) @db.Timestamp(6)
-  atualizado_em DateTime    @db.Timestamp(6)
   comunidade    comunidade? @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

@@ -9,8 +9,9 @@ CREATE TABLE "comunidade" (
     "link_linkedin" VARCHAR(255),
     "link_website" VARCHAR(255),
     "link_github" VARCHAR(255),
+    "ativo" BOOLEAN DEFAULT true,
+    "atualizado_em" TIMESTAMP(6),
     "criado_em" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "atualizado_em" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "comunidade_pkey" PRIMARY KEY ("id")
 );
@@ -30,8 +31,9 @@ CREATE TABLE "evento" (
     "cep" VARCHAR(255),
     "link" VARCHAR(255),
     "evento_online" BOOLEAN DEFAULT false,
+    "ativo" BOOLEAN DEFAULT true,
+    "atualizado_em" TIMESTAMP(6),
     "criado_em" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "atualizado_em" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "evento_pkey" PRIMARY KEY ("id")
 );
@@ -41,8 +43,9 @@ CREATE TABLE "post" (
     "id" BIGSERIAL NOT NULL,
     "id_comunidade" BIGINT NOT NULL,
     "texto" VARCHAR(255) NOT NULL,
+    "ativo" BOOLEAN DEFAULT true,
+    "atualizado_em" TIMESTAMP(6),
     "criado_em" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "atualizado_em" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "post_pkey" PRIMARY KEY ("id")
 );
@@ -55,8 +58,9 @@ CREATE TABLE "usuario" (
     "senha" VARCHAR(255) NOT NULL,
     "funcao" VARCHAR(255) NOT NULL,
     "usuario_root" BOOLEAN DEFAULT false,
+    "ativo" BOOLEAN DEFAULT true,
+    "atualizado_em" TIMESTAMP(6),
     "criado_em" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "atualizado_em" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "usuario_pkey" PRIMARY KEY ("id")
 );

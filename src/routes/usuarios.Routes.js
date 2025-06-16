@@ -1,6 +1,6 @@
 import express from 'express'
 
-import comunidadesController from '../controllers/comunidades.Controller.js'
+import comunidadesController from '../controllers/comunidades.controller.js'
 
 const usuariosRouter = express.Router()
 

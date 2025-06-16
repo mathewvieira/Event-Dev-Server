@@ -1,11 +1,10 @@
 import express from 'express'
 
-import { API_MAX_VERSION, API_MIN_VERSION } from './shared/consts/apiConsts.js'
+import { API_MAX_VERSION, API_MIN_VERSION } from './shared/consts/api.consts.js'
 
-import apiRouter from './routes/api.Routes.js'
-import getApiPath from './shared/utils/api.Utils.js'
-import stampMiddleware from './middlewares/stamp.Middleware.js'
-import './shared/utils/pool.Utils.js'
+import apiRouter from './routes/api.routes.js'
+import getApiPath from './shared/utils/api.utils.js'
+import stampMiddleware from './middlewares/stamp.middleware.js'
 
 BigInt.prototype.toJSON = function () {
   return this.toString()

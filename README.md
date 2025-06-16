@@ -37,6 +37,8 @@ npx prisma migrate
 ```
 
 ```bash
+docker compose exec app npm run make:sql
+
 docker compose exec app npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql
 
 docker compose exec app npx prisma migrate resolve --applied 0_init

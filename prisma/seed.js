@@ -7,11 +7,13 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('Iniciando o processo de seeding...')
 
-  // console.log('Limpando dados existentes...')
-  // await prisma.post.deleteMany()
-  // await prisma.evento.deleteMany()
-  // await prisma.usuario.deleteMany()
-  // await prisma.comunidade.deleteMany()
+  console.log('Limpando dados existentes...')
+  await prisma.post.deleteMany()
+  await prisma.evento.deleteMany()
+  await prisma.usuario.deleteMany()
+  await prisma.comunidade.deleteMany()
+
+  const dateNow = new Date().toISOString()
 
   console.log('Criando comunidade principal...')
   const devCommunity = await prisma.comunidade.create({
@@ -20,9 +22,21 @@ async function main() {
       descricao: 'Uma comunidade para desenvolvedores de todos os níveis.',
       logo_url: faker.image.avatar(),
       link_github: 'https://github.com/exemplo',
-      atualizado_em: new Date()
+      criado_em: dateNow
     }
   })
+
+  for (let index = 1; index <= 50; index++) {
+    await prisma.comunidade.create({
+      data: {
+        nome: faker.company.name(),
+        descricao: faker.lorem.sentence(),
+        logo_url: faker.image.avatar(),
+        link_github: faker.internet.url(),
+        criado_em: dateNow
+      }
+    })
+  }
 
   console.log('Criando usuários...')
   await prisma.usuario.create({
@@ -32,7 +46,7 @@ async function main() {
       funcao: 'admin',
       usuario_root: true,
       id_comunidade: null,
-      atualizado_em: new Date()
+      criado_em: dateNow
     }
   })
 
@@ -42,7 +56,7 @@ async function main() {
       senha: hashSync('senha456', 10),
       funcao: 'membro',
       usuario_root: false,
-      atualizado_em: new Date(),
+      criado_em: dateNow,
 
       comunidade: {
         connect: {
@@ -58,12 +72,12 @@ async function main() {
       {
         id_comunidade: devCommunity.id,
         texto: faker.lorem.paragraph(),
-        atualizado_em: new Date()
+        criado_em: dateNow
       },
       {
         id_comunidade: devCommunity.id,
         texto: 'Bem-vindos à nova comunidade! Participe dos nossos eventos.',
-        atualizado_em: new Date()
+        criado_em: dateNow
       }
     ]
   })
@@ -81,7 +95,7 @@ async function main() {
       estado: faker.location.state({ abbreviated: true }),
       cep: faker.location.zipCode(),
       evento_online: false,
-      atualizado_em: new Date(),
+      criado_em: dateNow,
 
       comunidade: {
         connect: {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch src --exec \"node src/index.js\"",
     "start": "node src/index.js",
-    "make:db": "npx -p @dbml/cli@3.13.5 dbml2sql db/docs/gt.schema.dbml -o db/out/gt.schema.sql --postgres && mv dbml-error.log db/out/gt.error.log"
+    "make:sql": "npx -p @dbml/cli@3.13.5 dbml2sql db/docs/gt.schema.dbml -o db/out/gt.schema.sql --postgres && mv dbml-error.log db/out/gt.error.log"
   },
   "repository": {
     "type": "git",

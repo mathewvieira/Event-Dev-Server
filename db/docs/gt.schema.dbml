@@ -8,8 +8,9 @@ Table comunidade {
   link_linkedin varchar(255) [null]
   link_website varchar(255) [null]
   link_github varchar(255) [null]
+  ativo boolean [default: true]
+  atualizado_em timestamp [null]
   criado_em timestamp [default: `now()`, not null]
-  atualizado_em timestamp [not null]
 }
 
 Table usuario {
@@ -19,8 +20,9 @@ Table usuario {
   senha varchar(255) [not null]
   funcao varchar(255) [not null]
   usuario_root boolean [default: false]
+  ativo boolean [default: true]
+  atualizado_em timestamp [null]
   criado_em timestamp [default: `now()`, not null]
-  atualizado_em timestamp [not null]
 }
 
 Table evento {
@@ -37,14 +39,16 @@ Table evento {
   cep varchar(255) [null]
   link varchar(255) [null]
   evento_online boolean [default: false]
+  ativo boolean [default: true]
+  atualizado_em timestamp [null]
   criado_em timestamp [default: `now()`, not null]
-  atualizado_em timestamp [not null]
 }
 
 Table post {
   id bigint [pk, increment]
   id_comunidade bigint [ref: > comunidade.id, not null]
   texto varchar(255) [not null]
+  ativo boolean [default: true]
+  atualizado_em timestamp [null]
   criado_em timestamp [default: `now()`, not null]
-  atualizado_em timestamp [not null]
 }

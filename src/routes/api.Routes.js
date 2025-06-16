@@ -1,12 +1,12 @@
 import express from 'express'
 import status from 'http-status'
 
-import { ROUTES } from '../shared/consts/routes.Consts.js'
+import { ROUTES } from '../shared/consts/routes.consts.js'
 
-import comunidadesRouter from './comunidades.Routes.js'
-import eventosRouter from './eventos.Routes.js'
-import postsRouter from './posts.Routes.js'
-import usuariosRouter from './usuarios.Routes.js'
+import comunidadesRouter from './comunidades.routes.js'
+import eventosRouter from './eventos.routes.js'
+import postsRouter from './posts.routes.js'
+import usuariosRouter from './usuarios.routes.js'
 
 const apiRouter = express.Router()
 

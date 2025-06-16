@@ -1,6 +1,6 @@
 export const ROUTES = {
-  comunidades: '/comunidades',
-  eventos: '/eventos',
-  posts: '/posts',
-  usuarios: '/usuarios'
+  comunidades: ['/comunidade', '/comunidades'],
+  eventos: ['/evento', '/eventos'],
+  posts: ['/post', '/posts'],
+  usuarios: ['/usuario', '/usuarios']
 }
