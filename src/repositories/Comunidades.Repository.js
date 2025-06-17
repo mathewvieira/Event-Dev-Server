@@ -3,11 +3,12 @@ import pool from '../shared/utils/pool.utils.js'
 import { ComunidadeResponseDTO } from '../dtos/comunidades.dto.js'
 
 class ComunidadesRepository {
-  async findAll(skip = 0, take = 50) {
+  async findAll(skip = 0, take = 50, apenasAtivos = true) {
     try {
       const comunidades = await pool.comunidade.findMany({
         skip: skip,
-        take: take
+        take: take,
+        where: { ativo: apenasAtivos }
       })
 
       return comunidades.map((comunidade) => new ComunidadeResponseDTO(comunidade))
@@ -16,15 +17,13 @@ class ComunidadesRepository {
     }
   }
 
-  async findById(id) {
+  async findById(id, apenasAtivos = true) {
     try {
       const comunidade = await pool.comunidade.findUnique({
-        where: { id }
+        where: { id, ativo: apenasAtivos }
       })
 
-      if (!comunidade) {
-        return null
-      }
+      if (!comunidade) return null
 
       return new ComunidadeResponseDTO(comunidade)
     } catch (error) {
@@ -44,10 +43,11 @@ class ComunidadesRepository {
     }
   }
 
-  async update(id, comunidadeUpdateDTO) {
+  async update(id, comunidadeUpdateDTO, apenasAtivos = true) {
     try {
+      console.log(comunidadeUpdateDTO.toUpdateData())
       const comunidade = await pool.comunidade.update({
-        where: { id },
+        where: { id, ativo: apenasAtivos },
         data: comunidadeUpdateDTO.toUpdateData()
       })
 

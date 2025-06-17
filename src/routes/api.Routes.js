@@ -8,6 +8,9 @@ import eventosRouter from './eventos.routes.js'
 import postsRouter from './posts.routes.js'
 import usuariosRouter from './usuarios.routes.js'
 
+import notFoundMiddleware from '../middlewares/notFound.middleware.js'
+import errorMiddleware from '../middlewares/error.middleware.js'
+
 const apiRouter = express.Router()
 
 apiRouter.get('/', (_req, res) => {
@@ -15,11 +18,11 @@ apiRouter.get('/', (_req, res) => {
 })
 
 apiRouter.use(ROUTES.comunidades, comunidadesRouter)
-
 apiRouter.use(ROUTES.eventos, eventosRouter)
-
 apiRouter.use(ROUTES.posts, postsRouter)
-
 apiRouter.use(ROUTES.usuarios, usuariosRouter)
+
+apiRouter.use(notFoundMiddleware)
+apiRouter.use(errorMiddleware)
 
 export default apiRouter
