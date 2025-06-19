@@ -1,5 +1,4 @@
 import status from 'http-status'
-
 import PostsService from '../services/Posts.Service.js'
 import { formatJson, formatNumber, formatResponse } from '../shared/utils/format.utils.js'
 

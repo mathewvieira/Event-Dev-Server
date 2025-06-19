@@ -1,5 +1,3 @@
-
-
 import pool from '../shared/utils/pool.utils.js'
 import { PostResponseDTO } from '../dtos/posts.dto.js'
 

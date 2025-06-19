@@ -1,5 +1,5 @@
 
-import PostsRepository from '../repositories/Posts.Repository.js'
+import PostsRepository from '../repositories/Post.Repository.js'
 import { PostCreateDTO, PostUpdateDTO } from '../dtos/posts.dto.js'
 class PostsService {
   constructor(postsRepository) {
