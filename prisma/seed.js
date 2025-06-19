@@ -17,6 +17,9 @@ const TEXTOS_POSTS = [
   'Interessado em entrar para a área de UX/UI Design? Detalhamos os primeiros passos e como construir um portfólio.',
 ];
 
+const FUNCOES_USUARIO = ['membro', 'moderador', 'editor', 'colaborador'];
+const SENHAS_USUARIO_FAKE = ['senha123!', 'mudar456!', 'abcxyz789!', 'devtest@'];
+
 async function main() {
   console.log('Iniciando o processo de seeding...')
 
@@ -51,33 +54,72 @@ async function main() {
     })
   }
 
-  console.log('Criando usuários...')
+   console.log('Criando usuários...');
+  const geralComunidades = await prisma.comunidade.findMany({ select: { id: true } });
+  const geralComunidadeIds = geralComunidades.map(c => c.id);
+
   await prisma.usuario.create({
     data: {
-      email: 'admin@exemplo.com',
-      senha: hashSync('senha123', 10),
+      email: 'admin@devpower.com',
+      senha: hashSync('senha123DevPower!', 10),
       funcao: 'admin',
       usuario_root: true,
       id_comunidade: null,
-      criado_em: dateNow
+      criado_em: dateNow,
+      atualizado_em: dateNow,
+      ativo: true,
     }
-  })
+  });
 
   await prisma.usuario.create({
     data: {
-      email: 'membro@exemplo.com',
-      senha: hashSync('senha456', 10),
+      email: 'membro@devpower.com',
+      senha: hashSync('membro456!', 10),
       funcao: 'membro',
       usuario_root: false,
       criado_em: dateNow,
-
+      atualizado_em: dateNow,
+      ativo: true,
       comunidade: {
         connect: {
           id: devCommunity.id
         }
       }
     }
-  })
+  });
+
+  for (let i = 0; i < 20; i++) {
+    const isMemberOfCommunity = faker.datatype.boolean();
+    const randomCommunityId = geralComunidadeIds.length > 0 && isMemberOfCommunity
+      ? faker.helpers.arrayElement(geralComunidadeIds)
+      : null;
+
+    const firstName = faker.person.firstName().toLowerCase();
+    const lastName = faker.person.lastName().toLowerCase();
+    let email = faker.internet.email({ firstName: firstName, lastName: lastName, provider: 'example.com' }).toLowerCase();
+    if (email.length > 255) email = email.substring(0, 252) + '...';
+
+    let senhaGerada = faker.helpers.arrayElement(SENHAS_USUARIO_FAKE);
+    let senhaHash = hashSync(senhaGerada, 10);
+    if (senhaHash.length > 255) senhaHash = senhaHash.substring(0, 255);
+
+    let funcaoUsuario = faker.helpers.arrayElement(FUNCOES_USUARIO);
+    if (funcaoUsuario.length > 255) funcaoUsuario = funcaoUsuario.substring(0, 255);
+
+    await prisma.usuario.create({
+      data: {
+        email: email,
+        senha: senhaHash,
+        funcao: funcaoUsuario,
+        usuario_root: false,
+        id_comunidade: randomCommunityId,
+        criado_em: dateNow,
+        atualizado_em: dateNow,
+        ativo: faker.datatype.boolean(),
+      }
+    });
+  }
+  console.log('Usuários criados com sucesso!');
 
   console.log('Criando posts...');
   const todasComunidades = await prisma.comunidade.findMany({ select: { id: true } });

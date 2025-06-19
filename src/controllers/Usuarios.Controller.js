@@ -1,54 +1,60 @@
-import status from 'http-status'
-import UsuariosService from '../services/usuarios.service.js'
+import UsuariosService from '../services/Usuarios.Service.js' // Certifique-se do caminho e nome
+import { formatJson, formatNumber, formatResponse } from '../shared/utils/format.utils.js'
 
 class UsuariosController {
-  async index(_req, res) {
-    res.status(200).json({ status: res.statusCode, message: status[res.statusCode] })
-  }
-  async create(req, res, next) {
+  async index(req, res, next) {
     try {
-      const user = await UsuariosService.createUser(req.body)
-      res.status(201).json(user)
-    } catch (e) {
-      next(e)
+      const page = formatNumber(req.query.page, 1)
+      const perPage = formatNumber(req.query.perPage, 25)
+      const skip = (page - 1) * perPage
+      const usuarios = await UsuariosService.findAll(skip, perPage)
+      const data = formatResponse(usuarios)
+      const meta = { page: page, perPage: perPage, count: usuarios.length }
+      res.status(200).json(formatJson(res.statusCode, data, meta))
+    } catch (error) {
+      next(error)
     }
   }
 
-  async getAll(_req, res, next) {
+  async store(req, res, next) {
     try {
-      const users = await UsuariosService.getUsers()
-      res.status(200).json(users)
-    } catch (e) {
-      next(e)
+      const usuario = await UsuariosService.create(req.body)
+      const data = formatResponse(usuario)
+      res.status(data ? 201 : 400).json(formatJson(res.statusCode, data))
+    } catch (error) {
+      next(error)
     }
   }
 
-  async getById(req, res, next) {
+  async show(req, res, next) {
     try {
-      const user = await UsuariosService.getUserById(req.params.id)
-      res.status(200).json(user)
-    } catch (e) {
-      next(e)
+      const id = formatNumber(req.params.id)
+      const usuario = await UsuariosService.findById(id)
+      const data = formatResponse(usuario)
+      res.status(data ? 200 : 404).json(formatJson(res.statusCode, data))
+    } catch (error) {
+      next(error)
     }
   }
 
   async update(req, res, next) {
     try {
-      const updated = await UsuariosService.updateUser(req.params.id, req.body)
-      if (!updated) return res.status(404).json({ message: 'Usuário não encontrado' })
-      res.json(updated)
-    } catch (e) {
-      next(e)
+      const id = formatNumber(req.params.id)
+      const usuario = await UsuariosService.update(id, req.body)
+      const data = formatResponse(usuario)
+      res.status(data ? 200 : 400).json(formatJson(res.statusCode, data))
+    } catch (error) {
+      next(error)
     }
   }
 
-  async delete(req, res, next) {
+  async destroy(req, res, next) {
     try {
-      const deleted = await UsuariosService.deleteUser(req.params.id)
-      if (!deleted) return res.status(404).json({ message: 'Usuário não encontrado' })
-      res.status(204).send() //No content
-    } catch (e) {
-      next(e)
+      const id = formatNumber(req.params.id)
+      const usuario = await UsuariosService.delete(id)
+      res.status(usuario ? 204 : 404).json(formatJson(res.statusCode))
+    } catch (error) {
+      next(error)
     }
   }
 }
