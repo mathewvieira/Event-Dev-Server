@@ -1,47 +1,28 @@
-# EventDev Communities
+## Sequencia de comandos para entrar em modo de desenvolvimento
 
-## Como executar o projeto?
+## Requisitos
+> Node v22.X /
+> Docker
 
-### Iniciando
 
-Faça uma cópia do arquivo `.env.example` e renomeie para `.env`.
-
-### P/ Subir os Serviços
-
-`docker compose up -d --build`
-
-### P/ Acessar
-
-API: <http://localhost:5122>.
-
-pgAdmin: <http://localhost:5514>.
-
-### P/ Parar os Serviços
-
-`docker compose down`
-
-(Cuidado!) Execute esse comando caso também queira excluir os Volumes: `docker compose down -v`
-
-Comandos Úteis:
 
 ```bash
-docker compose exec -it app bash
+git clone https://github.com/mathewvieira/Event-Dev-Server.git
 
-docker compose exec -it db bash
+git checkout <branch>
+```
+### copiar o .env.example para um arquivo .env
+```bash
+npm install
+
+docker-compose up -d
+
+npx prisma migrate dev
 
 npx prisma db pull
 
 npx prisma db seed
 
-npx prisma migrate
+npm run start:dev
 ```
-
-```bash
-docker compose exec app npm run make:sql
-
-docker compose exec app npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql
-
-docker compose exec app npx prisma migrate resolve --applied 0_init
-
-npx prisma migrate dev --name "nome_da_nova_mudanca"
-```
+### e pronto, já estará com o banco de dados em um container docker, alimentado e pronto para consumo. e rotas prontas para serem testadas.

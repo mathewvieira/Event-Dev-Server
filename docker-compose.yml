@@ -1,74 +1,36 @@
 services:
-  app:
-    image: node:24-bookworm
-    container_name: node
-    restart: unless-stopped
-    working_dir: /app
-    ports:
-      - ${NODE_PORT}:${NODE_PORT}
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-      NODE_ENV: ${NODE_ENV}
-      NODE_PORT: ${NODE_PORT}
-      CHOKIDAR_USEPOLLING: true
-      CHOKIDAR_INTERVAL: 1000
+      POSTGRES_DB: gt
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5434:5432"
     volumes:
-      - ./:/app
-      - /app/node_modules
-    depends_on:
-      db:
-        condition: service_healthy
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - event_dev_network
-    command: >
-      sh -c "
-        npm install npm@latest -g &&
-        npm install &&
-        npx prisma migrate deploy &&
-        npx prisma generate --no-hints &&
-        npm run dev
-      "
+      - my-network
 
   pgadmin:
-    container_name: pgadmin
     image: dpage/pgadmin4
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - ${PGADMIN_PORT}:80
+    container_name: pgadmin_gui
+    restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - event_dev_network
-
-  db:
-    image: postgres:17.5-bookworm
-    container_name: postgres
-    restart: always
     ports:
-      - ${DATABASE_PORT}:${DATABASE_PORT}
-    environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -p ${DATABASE_PORT} -U ${DATABASE_USER} -d ${DATABASE_NAME}']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - db
     networks:
-      - event_dev_network
+      - my-network
 
 volumes:
-  pgadmin_data:
-  db_data:
+  postgres_data:
 
 networks:
-  event_dev_network:
+  my-network:
+    driver: bridge
