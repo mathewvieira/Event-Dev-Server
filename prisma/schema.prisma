@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model comunidade {
+model community {
   id             BigInt    @id @default(autoincrement())
   nome           String    @db.VarChar(255)
   descricao      String?   @db.VarChar(255)
@@ -20,29 +26,43 @@ model comunidade {
   ativo          Boolean   @default(true) @db.Boolean
   atualizado_em  DateTime? @db.Timestamp(6)
   criado_em      DateTime  @default(now()) @db.Timestamp(6)
-  evento         evento[]
+  evento         event[]
   post           post[]
   usuario        usuario[]
 }
 
-model evento {
+model address {
+  id            String @id @default(uuid())
+  cep           String @db.VarChar(8) 
+  state       String @db.VarChar(25)
+  city       String @db.VarChar(50)
+  neighborhood  String @db.VarChar(50)
+  streetAddress String @db.VarChar(50)
+  number        String @db.VarChar(10)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt() @default(now())
+  event event[]
+  @@index([state,city])
+
+}
+
+model event {
   id                BigInt     @id @default(autoincrement())
   id_comunidade     BigInt
+  id_address        String
   titulo            String     @db.VarChar(255)
   capa_url          String     @db.VarChar(255)
   descricao         String     @db.VarChar(255)
   data_hora_inicial DateTime   @db.Timestamp(6)
   data_hora_final   DateTime   @db.Timestamp(6)
-  endereco          String?    @db.VarChar(255)
-  cidade            String?    @db.VarChar(255)
-  estado            String?    @db.VarChar(255)
-  cep               String?    @db.VarChar(255)
   link              String?    @db.VarChar(255)
   evento_online     Boolean?   @default(false)
   ativo             Boolean    @default(true) @db.Boolean
   atualizado_em     DateTime?  @db.Timestamp(6)
   criado_em         DateTime   @default(now()) @db.Timestamp(6)
-  comunidade        comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  address           address   @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comunidade        community @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model post {
@@ -52,7 +72,7 @@ model post {
   ativo         Boolean    @default(true) @db.Boolean
   atualizado_em DateTime?  @db.Timestamp(6)
   criado_em     DateTime   @default(now()) @db.Timestamp(6)
-  comunidade    comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  comunidade    community @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model usuario {
@@ -65,5 +85,5 @@ model usuario {
   ativo         Boolean     @default(true) @db.Boolean
   atualizado_em DateTime?   @db.Timestamp(6)
   criado_em     DateTime    @default(now()) @db.Timestamp(6)
-  comunidade    comunidade? @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  comunidade    community? @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
