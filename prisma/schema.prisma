@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,63 +13,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model comunidade {
-  id             BigInt    @id @default(autoincrement())
-  nome           String    @db.VarChar(255)
-  descricao      String?   @db.VarChar(255)
+model community {
+  id             Int    @id @default(autoincrement())
+  name           String    @db.VarChar(255)
+  description    String?   @db.VarChar(255)
   logo_url       String    @db.VarChar(255)
-  telefone       String?   @db.VarChar(255)
+  phone_number   String?   @db.VarChar(255)
   link_instagram String?   @db.VarChar(255)
   link_linkedin  String?   @db.VarChar(255)
   link_website   String?   @db.VarChar(255)
   link_github    String?   @db.VarChar(255)
-  ativo          Boolean   @default(true) @db.Boolean
-  atualizado_em  DateTime? @db.Timestamp(6)
-  criado_em      DateTime  @default(now()) @db.Timestamp(6)
-  evento         evento[]
+  is_active      Boolean   @default(true) @db.Boolean
+  updated_at     DateTime? @updatedAt() @default(now())
+  created_at     DateTime  @default(now()) @db.Timestamp(6)
+  event          event[]
   post           post[]
-  usuario        usuario[]
+  user           user[]
 }
 
-model evento {
-  id                BigInt     @id @default(autoincrement())
-  id_comunidade     BigInt
-  titulo            String     @db.VarChar(255)
+model address {
+  id            Int @id @default(autoincrement())
+  cep           String @db.VarChar(8) 
+  state       String @db.VarChar(25)
+  city       String @db.VarChar(50)
+  neighborhood  String @db.VarChar(50)
+  streetAddress String @db.VarChar(50)
+  number        String @db.VarChar(10)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt() @default(now())
+  event event[]
+  @@index([state,city])
+
+}
+
+model event {
+  id                Int     @id @default(autoincrement())
+  id_community     Int
+  id_address       Int
+  title            String     @db.VarChar(255)
   capa_url          String     @db.VarChar(255)
-  descricao         String     @db.VarChar(255)
-  data_hora_inicial DateTime   @db.Timestamp(6)
-  data_hora_final   DateTime   @db.Timestamp(6)
-  endereco          String?    @db.VarChar(255)
-  cidade            String?    @db.VarChar(255)
-  estado            String?    @db.VarChar(255)
-  cep               String?    @db.VarChar(255)
+  description         String     @db.VarChar(255)
+  start_date_time DateTime   @db.Timestamp(6)
+  end_date_time   DateTime   @db.Timestamp(6)
   link              String?    @db.VarChar(255)
-  evento_online     Boolean?   @default(false)
-  ativo             Boolean    @default(true) @db.Boolean
-  atualizado_em     DateTime?  @db.Timestamp(6)
-  criado_em         DateTime   @default(now()) @db.Timestamp(6)
-  comunidade        comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  event_online     Boolean?   @default(false)
+  is_active             Boolean    @default(true) @db.Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt() @default(now())
+
+  address           address   @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  community        community @relation(fields: [id_community], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model post {
-  id            BigInt     @id @default(autoincrement())
-  id_comunidade BigInt
-  texto         String     @db.VarChar(255)
-  ativo         Boolean    @default(true) @db.Boolean
-  atualizado_em DateTime?  @db.Timestamp(6)
-  criado_em     DateTime   @default(now()) @db.Timestamp(6)
-  comunidade    comunidade @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id            Int     @id @default(autoincrement())
+  id_community Int
+  text         String     @db.VarChar(255)
+  is_active         Boolean    @default(true) @db.Boolean
+  updated_at    DateTime?  @db.Timestamp(6)
+  created_at    DateTime   @default(now()) @db.Timestamp(6)
+  community    community @relation(fields: [id_community], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model usuario {
-  id            BigInt      @id @default(autoincrement())
-  id_comunidade BigInt?
+model user {
+  id            Int      @id @default(autoincrement())
+  id_community Int?
   email         String      @unique @db.VarChar(255)
-  senha         String      @db.VarChar(255)
-  funcao        String      @db.VarChar(255)
+  password         String      @db.VarChar(255)
+  function        String      @db.VarChar(255)
   usuario_root  Boolean?    @default(false)
-  ativo         Boolean     @default(true) @db.Boolean
-  atualizado_em DateTime?   @db.Timestamp(6)
-  criado_em     DateTime    @default(now()) @db.Timestamp(6)
-  comunidade    comunidade? @relation(fields: [id_comunidade], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  is_active         Boolean     @default(true) @db.Boolean
+  updated_at    DateTime?   @db.Timestamp(6)
+  created_at    DateTime    @default(now()) @db.Timestamp(6)
+  community    community? @relation(fields: [id_community], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
