@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "public"."community" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "updated_at" SET DATA TYPE TIMESTAMP(3);
