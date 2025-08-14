@@ -14,7 +14,7 @@ datasource db {
 }
 
 model community {
-  id             BigInt    @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
   nome           String    @db.VarChar(255)
   descricao      String?   @db.VarChar(255)
   logo_url       String    @db.VarChar(255)
@@ -47,8 +47,8 @@ model address {
 }
 
 model event {
-  id                BigInt     @id @default(autoincrement())
-  id_comunidade     BigInt
+  id                Int     @id @default(autoincrement())
+  id_comunidade     Int
   id_address        String
   titulo            String     @db.VarChar(255)
   capa_url          String     @db.VarChar(255)
@@ -66,8 +66,8 @@ model event {
 }
 
 model post {
-  id            BigInt     @id @default(autoincrement())
-  id_comunidade BigInt
+  id            Int     @id @default(autoincrement())
+  id_comunidade Int
   texto         String     @db.VarChar(255)
   ativo         Boolean    @default(true) @db.Boolean
   atualizado_em DateTime?  @db.Timestamp(6)
@@ -76,8 +76,8 @@ model post {
 }
 
 model usuario {
-  id            BigInt      @id @default(autoincrement())
-  id_comunidade BigInt?
+  id            Int      @id @default(autoincrement())
+  id_comunidade Int?
   email         String      @unique @db.VarChar(255)
   senha         String      @db.VarChar(255)
   funcao        String      @db.VarChar(255)
