@@ -1,4 +1,4 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query,  } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { CommunityService } from "./community.service";
 import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
@@ -8,7 +8,7 @@ export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
   @Get()
-  async getAll(@Query('take', new DefaultValuePipe(0)) take: number, @Query('skip', new DefaultValuePipe(5)) skip: number) {
+  async getAll(@Query('take', new DefaultValuePipe(5)) take: number, @Query('skip', new DefaultValuePipe(0)) skip: number) {
     return await this.communityService.getAll(take, skip);
   }
 
