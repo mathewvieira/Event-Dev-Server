@@ -1,8 +1,8 @@
 ## Sequencia de comandos para entrar em modo de desenvolvimento
 
 ## Requisitos
-> Node v22.X
-> Docker Desktop / Linux
+> Node v22.X /
+> Docker
 
 ### copiar o .env.example para um arquivo .env
 
