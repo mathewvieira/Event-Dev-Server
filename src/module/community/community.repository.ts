@@ -7,12 +7,12 @@ import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
 export class CommunityRepository {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async getAll(take: number, skip: number) {
-        return await this.prismaService.community.findMany({
-            take,
-            skip,
-        })
-    }
+  async getAll(take: number, skip: number) {
+    return await this.prismaService.community.findMany({
+      take: take,
+      skip: skip,
+    })
+  }
 
     async create(data: CreateCommunityDto) {
         return await this.prismaService.community.create({
