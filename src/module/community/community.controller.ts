@@ -2,6 +2,14 @@ import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, P
 import { CommunityService } from "./community.service";
 import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
+import { PublicAccess } from "supertokens-nestjs";
+@PublicAccess
+
+/*
+ * TODA E QUALQUER ROTA ESTARÁ PROTEGIDA (PRECISA LOGAR), SE QUISER QUE UMA ROTA SEJA ACESSIVEL
+ * PARA TODOS, ADICIONE O DECORADOR @PublicAccess DO supertokens-nestjs
+ * (import { PublicAccess } from "supertokens-nestjs";)
+ * */
 
 @Controller('community')
 export class CommunityController {
@@ -31,5 +39,4 @@ export class CommunityController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     await this.communityService.delete(id);
   }
-
 }
