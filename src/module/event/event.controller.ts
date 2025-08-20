@@ -1,6 +1,7 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
+import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateCommunityDto } from "../community/dto/createCommunity.dto";
+import { skip } from "node:test";
 
 @Controller('event')
 export class EventController {
@@ -17,8 +18,8 @@ export class EventController {
     }
 
     @Get('')
-    async getAll() {
-        return await this.eventService.getAll();
+    async getAll(@Query('take', new DefaultValuePipe(5)) take: number, @Query('skip', new DefaultValuePipe(0)) skip: number) {
+        return await this.eventService.getAll(take, skip);
     }
 
      

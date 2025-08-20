@@ -13,7 +13,10 @@ export class EventRepository {
         return await this.prismaService.event.findUnique({where: {id}});
     }
 
-    async getAll() {
-        return await this.prismaService.event.findMany();
+    async getAll(take: number, skip: number) {
+        return await this.prismaService.event.findMany({
+            take,
+            skip
+        });
     }
 }

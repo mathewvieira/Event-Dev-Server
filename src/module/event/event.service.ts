@@ -14,7 +14,7 @@ export class EventService {
         if(!await this.eventRepository.getByID(id)) throw new NotFoundException();
     }
 
-    async getAll() {
-        return await this.eventRepository.getAll();
+    async getAll(take: number, skip: number) {
+        return await this.eventRepository.getAll(take, skip);
     }
 }
