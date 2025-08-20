@@ -1,26 +1,55 @@
 services:
+  app:
+    build: .
+    container_name: event_prod_backend
+    profiles: ["prod"]
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=${POSTGRES_DB}
+      - DATABASE_USER=${POSTGRES_USER}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_URL=${DATABASE_URL}
+      - NODE_PORT=${NODE_PORT}
+      - NODE_ENV=production
+    command: sh -c "npx prisma migrate deploy && node dist/src/main.js"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - my-network
+
   db:
     image: postgres:15-alpine
     container_name: postgres_db
+    env_file:
+      - .env
     restart: always
-    environment:
-      POSTGRES_DB: gt
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
     ports:
       - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - my-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_gui
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "${PGADMIN_PORT}:80"
     depends_on:
