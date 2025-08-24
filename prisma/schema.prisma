@@ -26,6 +26,7 @@ model community {
 }
 
 model address {
+  id            Int      @id @default(autoincrement())
   cep           String   @db.VarChar(8)
   state         String   @db.VarChar(25)
   city          String   @db.VarChar(50)
@@ -34,7 +35,6 @@ model address {
   number        String   @db.VarChar(10)
   created_at    DateTime @default(now())
   updated_at    DateTime @default(now()) @updatedAt
-  id            Int      @id @default(autoincrement())
   event         event[]
 
   @@index([state, city])
@@ -51,7 +51,7 @@ model event {
   id_community    Int
   id_address      Int
   title           String    @db.VarChar(255)
-  capa_url        String    @db.VarChar(255)
+  capa_url        String?    @db.VarChar(255)
   link            String?   @db.VarChar(255)
   description     String    @db.VarChar(255)
   modality        modality_event

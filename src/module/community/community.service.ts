@@ -22,7 +22,7 @@ export class CommunityService {
     }
 
     async isExistCommunity(id: number) {
-        if(!await this.communityRepository.getByID(id)) throw new NotFoundException('Usuário não encontrado');
+        if(!await this.communityRepository.getByID(id)) throw new NotFoundException('Comunidade não encontrada!');
     }
 
     async update(id: number, data: UpdateCommunityDto) {

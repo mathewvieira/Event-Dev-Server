@@ -1,12 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
+import { EventDto } from "./dto/event.dto";
 
 @Injectable()
 export class EventRepository {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async create() {
-
+    async create(data: EventDto, idCommunity, idAddress) {
+        await this.prismaService.event.create({data: {
+            ...data,
+            id_address: idAddress,
+            id_community: idCommunity
+        }})
     }
 
     async getByID(id: number) {

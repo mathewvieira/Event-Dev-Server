@@ -6,6 +6,6 @@ import { CommunityController } from "./community.controller";
 @Module({
     providers: [CommunityRepository, CommunityService],
     controllers: [CommunityController],
-    exports: []
+    exports: [CommunityService]
 })
 export class CommunityModule { }
