@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { EventDto } from "./dto/event.dto";
+import { UpdateEventDto } from "./dto/updateEvent.dto";
 
 @Injectable()
 export class EventRepository {
@@ -23,5 +24,22 @@ export class EventRepository {
             take,
             skip
         });
+    }
+
+    async update(idEvent: number, data: UpdateEventDto) {
+        return await this.prismaService.event.update({
+            where: {
+                id: idEvent
+            },
+            data: data
+        })
+    }
+
+    async delete(idEvent: number) {
+        await this.prismaService.event.delete({
+            where: {
+                id: idEvent
+            }
+        })
     }
 }

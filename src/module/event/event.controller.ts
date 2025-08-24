@@ -1,8 +1,9 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateCommunityDto } from "../community/dto/createCommunity.dto";
 import { skip } from "node:test";
 import { CreateEventDto } from "./dto/createEvent.dto";
+import { UpdateEventDto } from "./dto/updateEvent.dto";
 
 @Controller('event')
 export class EventController {
@@ -23,6 +24,13 @@ export class EventController {
         return await this.eventService.getAll(take, skip);
     }
 
+    @Patch(':idEvent')
+    async update(@Param('idEvent', ParseIntPipe) idEvent: number, @Body() data: UpdateEventDto) {
+        return await this.eventService.update(idEvent, data);
+    }
 
-     
+    @Delete(':idEvent')
+    async delete (@Param('idEvent', ParseIntPipe) idEvent: number) {
+        await this.eventService.delete(idEvent);
+    }
 }
