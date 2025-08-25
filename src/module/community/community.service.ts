@@ -1,40 +1,38 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { CommunityRepository } from "./community.repository";
-import { CreateCommunityDto } from "./dto/createCommunity.dto";
-import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { CommunityRepository } from './community.repository'
+import { CreateCommunityDto } from './dto/createCommunity.dto'
+import { UpdateCommunityDto } from './dto/updateCommunity.dto'
 
 @Injectable()
 export class CommunityService {
-    constructor(private readonly communityRepository: CommunityRepository) {}
+  constructor(private readonly communityRepository: CommunityRepository) {}
 
-    async getAll(take: number, skip: number) {
-        return await this.communityRepository.getAll(take, skip);
-    }
+  async getAll(take: number, skip: number) {
+    return await this.communityRepository.getAll(take, skip)
+  }
 
-    async create(data: CreateCommunityDto) {
-        const user = await this.communityRepository.create(data);
-        return user;
-    }
+  async create(data: CreateCommunityDto) {
+    const user = await this.communityRepository.create(data)
+    return user
+  }
 
-    async getByID(id: number) {
-        await this.isExistCommunity(id)
-        return await this.communityRepository.getByID(id);
-    }
+  async getByID(id: number) {
+    await this.isExistCommunity(id)
+    return await this.communityRepository.getByID(id)
+  }
 
-    async isExistCommunity(id: number) {
-        if(!await this.communityRepository.getByID(id)) throw new NotFoundException('Usuário não encontrado');
-    }
+  async isExistCommunity(id: number) {
+    if (!(await this.communityRepository.getByID(id))) throw new NotFoundException('Usuário não encontrado')
+  }
 
-    async update(id: number, data: UpdateCommunityDto) {
-        await this.isExistCommunity(id);
+  async update(id: number, data: UpdateCommunityDto) {
+    await this.isExistCommunity(id)
 
-        return await this.communityRepository.update(id, data);
-    } 
+    return await this.communityRepository.update(id, data)
+  }
 
-
-    async delete(id: number) {
-        await this.isExistCommunity(id);
-        await this.communityRepository.delete(id);
-    }
-
+  async delete(id: number) {
+    await this.isExistCommunity(id)
+    await this.communityRepository.delete(id)
+  }
 }
