@@ -26,6 +26,7 @@ model community {
 }
 
 model address {
+  id            Int      @id @default(autoincrement())
   cep           String   @db.VarChar(8)
   state         String   @db.VarChar(25)
   city          String   @db.VarChar(50)
@@ -34,26 +35,31 @@ model address {
   number        String   @db.VarChar(10)
   created_at    DateTime @default(now())
   updated_at    DateTime @default(now()) @updatedAt
-  id            Int      @id @default(autoincrement())
   event         event[]
 
   @@index([state, city])
 }
 
+enum modality_event {
+  ONLINE
+  PRESENTIAL
+  HYBRID
+}
+
 model event {
   id              Int       @id @default(autoincrement())
-  capa_url        String    @db.VarChar(255)
-  link            String?   @db.VarChar(255)
-  created_at      DateTime  @default(now())
-  description     String    @db.VarChar(255)
-  end_date_time   DateTime  @db.Timestamp(6)
-  event_online    Boolean?  @default(false)
   id_community    Int
+  id_address      Int
+  title           String    @db.VarChar(255)
+  capa_url        String?    @db.VarChar(255)
+  link            String?   @db.VarChar(255)
+  description     String    @db.VarChar(255)
+  modality        modality_event
   is_active       Boolean   @default(true)
   start_date_time DateTime  @db.Timestamp(6)
-  title           String    @db.VarChar(255)
+  end_date_time   DateTime  @db.Timestamp(6)
+  created_at      DateTime  @default(now())
   updated_at      DateTime  @default(now()) @updatedAt
-  id_address      Int
   address         address   @relation(fields: [id_address], references: [id], onDelete: Cascade)
   community       community @relation(fields: [id_community], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
