@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { CommunityRepository } from "./community.repository";
 import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class CommunityService {
@@ -11,7 +12,7 @@ export class CommunityService {
         return await this.communityRepository.getAll(take, skip);
     }
 
-    async create(data: CreateCommunityDto) {
+    async create(data: Prisma.communityCreateInput) {
         const user = await this.communityRepository.create(data);
         return user;
     }

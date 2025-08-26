@@ -8,9 +8,9 @@ import { AuthModule } from './module/auth/auth.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({isGlobal: true}),
     PrismaModule,
     CommunityModule,
-    ConfigModule.forRoot({isGlobal: true}),
     AuthModule,
   ],
   controllers: [AppController],

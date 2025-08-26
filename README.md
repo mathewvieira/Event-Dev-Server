@@ -65,7 +65,7 @@ npx prisma db seed
 > **Nota:** Na primeira vez que rodar `migrate dev`, o Prisma pedirá um nome para a migração. Você pode dar um nome como "initial-setup".
 
 **3. Inicie a Aplicação NestJS**
-Finalmente, inicie o servidor de desenvolvimento.
+Finalmente, inicie o servidor de desenvolvimento. Ele irá recarregar automaticamente a cada alteração no código.
 ```bash
 npm run start:dev
 ```

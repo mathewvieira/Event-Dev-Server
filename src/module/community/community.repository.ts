@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class CommunityRepository {
@@ -14,7 +15,7 @@ export class CommunityRepository {
     })
   }
 
-  async create(data: CreateCommunityDto) {
+  async create(data: Prisma.communityCreateInput) {
     return await this.prismaService.community.create({
       data
     });

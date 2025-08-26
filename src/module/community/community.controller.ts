@@ -1,9 +1,6 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Put, Query } from "@nestjs/common";
 import { CommunityService } from "./community.service";
-import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
-import { PublicAccess } from "supertokens-nestjs";
-@PublicAccess
 
 /*
  * TODA E QUALQUER ROTA ESTARÁ PROTEGIDA (PRECISA LOGAR), SE QUISER QUE UMA ROTA SEJA ACESSIVEL
@@ -18,11 +15,6 @@ export class CommunityController {
   @Get()
   async getAll(@Query('take', new DefaultValuePipe(5)) take: number, @Query('skip', new DefaultValuePipe(0)) skip: number) {
     return await this.communityService.getAll(take, skip);
-  }
-
-  @Post()
-  async create(@Body() data: CreateCommunityDto) {
-    return await this.communityService.create(data);
   }
 
   @Get(':id')
