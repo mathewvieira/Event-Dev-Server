@@ -8,6 +8,8 @@ import { signUp, signIn, Error as STError } from 'supertokens-node/recipe/emailp
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { CommunitySignUpDto, UserSignUpDto } from './dto/signup.dto';
 import { SignInDto } from './dto/signin.dto';
+import { SessionContainer } from 'supertokens-node/recipe/session';
+import { Prisma } from '.prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +48,7 @@ export class AuthService {
       const userId = superTokenUser.user.id;
       await UserRoles.addRoleToUser('public', userId, 'community');
 
-      const communityData = {
+      const communityData: Prisma.communityCreateInput = {
         supertokens_id: userId,
         name: data.name,
         logo_url: data.logo_url,
@@ -72,5 +74,10 @@ export class AuthService {
 
   async createUser(data: UserSignUpDto) {
     return { status: 'Ainda não implementado' };
+  }
+
+  async signOut(session: SessionContainer) {
+    await session.revokeSession();
+    return { status: 'OK' };
   }
 }

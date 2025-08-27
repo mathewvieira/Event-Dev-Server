@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Session } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CommunitySignUpDto, UserSignUpDto } from "./dto/signup.dto";
 import { PublicAccess } from "supertokens-nestjs";
 import { SignInDto } from "./dto/signin.dto";
+import { SessionContainer } from "supertokens-node/recipe/session";
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +25,10 @@ export class AuthController {
   @PublicAccess()
   async signUpCommunity(@Body() data: CommunitySignUpDto) {
     return this.authService.createCommunity(data);
+  }
+
+  @Post('signout')
+  async signOut(@Session() session: SessionContainer) {
+    return this.authService.signOut(session);
   }
 }

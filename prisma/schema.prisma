@@ -20,7 +20,7 @@ model community {
   is_active               Boolean                  @default(true)
   name                    String                   @db.VarChar(255)
   phone_number            String?                  @db.VarChar(255)
-  updated_at              DateTime?                @default(now()) @updatedAt
+  updated_at              DateTime                 @default(now()) @updatedAt
   event                   event[]
   post                    post[]
   users                   community_user[]
@@ -71,16 +71,14 @@ model post {
 }
 
 model user {
-  id               Int                      @id @default(autoincrement())
-  supertokens_id   String                   @unique @db.VarChar(255)
-  email            String                   @unique @db.VarChar(255)
-  password         String                   @db.VarChar(255)
-  function         String                   @db.VarChar(255)
-  usuario_root     Boolean?                 @default(false)
-  is_active        Boolean                  @default(true)
-  updated_at       DateTime?                @db.Timestamp(6)
-  created_at       DateTime                 @default(now()) @db.Timestamp(6)
-  communities      community_user[]
+  id              Int                      @id @default(autoincrement())
+  supertokens_id  String                   @unique @db.VarChar(255)
+  function        String                   @db.VarChar(255)
+  usuario_root    Boolean?                 @default(false)
+  is_active       Boolean                  @default(true)
+  updated_at      DateTime?                @db.Timestamp(6)
+  created_at      DateTime                 @default(now()) @db.Timestamp(6)
+  communities     community_user[]
   communityRequests community_user_request[]
 }
 
@@ -112,7 +110,6 @@ model community_user_request {
   status       community_user_request_status @default(PENDING)
   created_at   DateTime                 @default(now()) @db.Timestamp(6)
   updated_at   DateTime                 @default(now()) @updatedAt
-
   community    community                @relation(fields: [community_id], references: [id], onDelete: Cascade)
   user         user                     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 

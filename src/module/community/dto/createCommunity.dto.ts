@@ -1,41 +1,35 @@
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class CreateCommunityDto {
-  @IsNotEmpty()
   @IsString()
-  authUserId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string
+  @IsNotEmpty({ message: 'O nome não pode estar vazio.' })
+  name: string;
 
   @IsString()
   @IsOptional()
-  description?: string
+  description?: string;
+
+  @IsUrl({}, { message: 'A URL do logo é inválida.' })
+  @IsNotEmpty({ message: 'A URL do logo não pode estar vazia.' })
+  logo_url: string;
 
   @IsString()
-  logo_url: string
-
-  @IsString()
   @IsOptional()
-  phone_number?: string
+  phone_number?: string;
 
-  @IsUrl()
+  @IsUrl({}, { message: 'O link do Instagram é inválido.' })
   @IsOptional()
-  link_instagram?: string
+  link_instagram?: string;
 
-  @IsUrl()
+  @IsUrl({}, { message: 'O link do LinkedIn é inválido.' })
   @IsOptional()
-  link_linkedin?: string
+  link_linkedin?: string;
 
-  @IsUrl()
+  @IsUrl({}, { message: 'O link do website é inválido.' })
   @IsOptional()
-  link_website?: string
+  link_website?: string;
 
-  @IsUrl()
+  @IsUrl({}, { message: 'O link do GitHub é inválido.' })
   @IsOptional()
-  link_github?: string
-
-  @IsBoolean()
-  is_active: boolean
+  link_github?: string;
 }

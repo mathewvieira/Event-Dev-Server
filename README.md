@@ -65,7 +65,11 @@ npx prisma db seed
 > **Nota:** Na primeira vez que rodar `migrate dev`, o Prisma pedirá um nome para a migração. Você pode dar um nome como "initial-setup".
 
 **3. Inicie a Aplicação NestJS**
+<<<<<<< HEAD
 Finalmente, inicie o servidor de desenvolvimento. Ele irá recarregar automaticamente a cada alteração no código.
+=======
+Finalmente, inicie o servidor de desenvolvimento.
+>>>>>>> 1e9bb9d3d0f8d8c62fa945d5ad4d39ea2d7d53a8
 ```bash
 npm run start:dev
 ```
@@ -90,3 +94,11 @@ docker-compose --profile prod up --build -d
 * `npm run build`: Compila o código TypeScript para JavaScript.
 * `npm run start:prod`: Inicia a aplicação em modo de produção (requer um build prévio).
 * `npx prisma studio`: Abre a interface visual do Prisma para explorar seu banco de dados.
+<<<<<<< HEAD
+=======
+
+npm run start:dev
+```
+### e pronto, já estará com o banco de dados em um container docker, alimentado e pronto para consumo. e rotas prontas para serem testadas.
+```
+>>>>>>> 1e9bb9d3d0f8d8c62fa945d5ad4d39ea2d7d53a8

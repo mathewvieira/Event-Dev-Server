@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { CreateCommunityDto } from "./dto/createCommunity.dto";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
 import { Prisma } from "@prisma/client";
 
@@ -15,26 +14,26 @@ export class CommunityRepository {
     })
   }
 
+  async getBySupertokensId(id: string) {
+    return await this.prismaService.community.findUnique({ where: { supertokens_id: id } });
+  }
+
   async create(data: Prisma.communityCreateInput) {
     return await this.prismaService.community.create({
       data
     });
   }
 
-  async getByID(id: number) {
-    return await this.prismaService.community.findUnique({ where: { id } })
-  }
-
-  async update(id: number, data: UpdateCommunityDto) {
+  async update(id: string, data: UpdateCommunityDto) {
     return await this.prismaService.community.update({
       where: {
-        id
+        supertokens_id: id
       },
       data
     })
   }
 
-  async delete(id: number) {
-    await this.prismaService.community.delete({ where: { id } })
+  async delete(id: string) {
+    await this.prismaService.community.delete({ where: { supertokens_id: id } })
   }
 }

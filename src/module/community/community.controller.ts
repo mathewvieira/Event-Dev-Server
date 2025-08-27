@@ -18,17 +18,17 @@ export class CommunityController {
   }
 
   @Get(':id')
-  async getByID(@Param('id', ParseIntPipe) id: number) {
-    return await this.communityService.getByID(id);
+  async getCommunityBySupertokensId(@Param('id') id: string) {
+    return await this.communityService.getBySupertokensId(id);
   }
 
   @Put(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateCommunityDto) {
-    return await this.communityService.update(id, data);
+  async updateCommunityBySupertokensId(@Param('id') id: string, @Body() data: UpdateCommunityDto) {
+    return await this.communityService.updateBySupertokensId(id, data);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    await this.communityService.delete(id);
+  async deleteCommunityBySupertokensId(@Param('id') id: string) {
+    await this.communityService.deleteBySupertokensId(id);
   }
 }
