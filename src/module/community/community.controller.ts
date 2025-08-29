@@ -1,6 +1,7 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Put, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { CommunityService } from "./community.service";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
+import { CreateCommunityDto } from "./dto/createCommunity.dto";
 
 /*
  * TODA E QUALQUER ROTA ESTARÁ PROTEGIDA (PRECISA LOGAR), SE QUISER QUE UMA ROTA SEJA ACESSIVEL
@@ -15,6 +16,13 @@ export class CommunityController {
   @Get()
   async getAll(@Query('take', new DefaultValuePipe(5)) take: number, @Query('skip', new DefaultValuePipe(0)) skip: number) {
     return await this.communityService.getAll(take, skip);
+  }
+
+  // O endpoint de criação é usado pelo AuthService, por isso é mantido.
+  // A proteção dele é indireta (só o AuthService consegue usá-lo de forma útil).
+  @Post()
+  async create(@Body() data: CreateCommunityDto) {
+    return await this.communityService.create(data);
   }
 
   @Get(':id')

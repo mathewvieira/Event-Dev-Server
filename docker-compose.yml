@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      target: final_prod
+      target: final-prod
     container_name: event_prod_backend
     profiles: ["prod"]
     env_file:
@@ -12,9 +12,11 @@ services:
       - "${NODE_PORT}:${NODE_PORT}"
     environment:
       - DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public"
+      - REDIS_HOST=redis # Adicionado para conectar ao Redis
+      - REDIS_PORT=6379  # Adicionado para conectar ao Redis
       - NODE_PORT=${NODE_PORT}
       - NODE_ENV=production
-    command: node dist/src/main.js
+    command: sh -c "npx prisma migrate deploy && node dist/src/main.js"
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -44,10 +46,11 @@ services:
       context: .
       target: runner
     container_name: event_prod_migrate
+    profiles: ["prod"] # Garante que só rode em produção
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      - DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public"
     command: sh -c "npx prisma migrate deploy"
     depends_on:
       db:
@@ -65,12 +68,13 @@ services:
     ports:
       - "${PGADMIN_PORT}:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - my-network
 
   supertokens:
-    image: supertokens/supertokens-postgresql
+    image: supertokens.io/supertokens/supertokens-postgresql
     restart: unless-stopped
     ports:
       - "3567:3567"
@@ -82,8 +86,20 @@ services:
     networks:
       - my-network
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - my-network
+
 volumes:
   postgres_data:
+  redis_data:
 
 networks:
   my-network:
