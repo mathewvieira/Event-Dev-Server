@@ -33,8 +33,6 @@ async function main() {
   console.log('👤 Criando 50 usuários...');
   const usersData = Array.from({ length: 50 }, () => ({
     supertokens_id: faker.string.uuid(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
     function: faker.person.jobTitle(),
   }));
   await prisma.user.createMany({ data: usersData });

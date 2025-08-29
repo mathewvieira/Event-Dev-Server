@@ -1,5 +1,5 @@
 import { modality_event } from "@prisma/client"
-import { IsBoolean, IsDate, IsDateString, IsEnum, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsDateString, IsEnum, IsOptional, IsString } from "class-validator"
 
 export class EventDto {
     @IsString()
@@ -19,7 +19,7 @@ export class EventDto {
 
     @IsString()
     title: string
-    
+
     @IsOptional()
     capa_url: string
 

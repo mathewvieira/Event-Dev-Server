@@ -1,7 +1,7 @@
 import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { CommunityService } from "./community.service";
 import { UpdateCommunityDto } from "./dto/updateCommunity.dto";
-import { CreateCommunityDto } from "./dto/createCommunity.dto";
+import { Prisma } from "@prisma/client";
 
 /*
  * TODA E QUALQUER ROTA ESTARÁ PROTEGIDA (PRECISA LOGAR), SE QUISER QUE UMA ROTA SEJA ACESSIVEL
@@ -21,7 +21,7 @@ export class CommunityController {
   // O endpoint de criação é usado pelo AuthService, por isso é mantido.
   // A proteção dele é indireta (só o AuthService consegue usá-lo de forma útil).
   @Post()
-  async create(@Body() data: CreateCommunityDto) {
+  async create(@Body() data: Prisma.communityCreateInput) {
     return await this.communityService.create(data);
   }
 

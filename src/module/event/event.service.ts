@@ -24,10 +24,10 @@ export class EventService {
 
 
     async create(idCommunity: number, data: CreateEventDto) {
-        await this.communityService.isExistCommunity(idCommunity);
+        await this.communityService.getByID(idCommunity);
 
         const address = await this.addressService.create(data.address);
-        
+
         await this.eventRepository.create(data.event, idCommunity, address.id);
 
     }
