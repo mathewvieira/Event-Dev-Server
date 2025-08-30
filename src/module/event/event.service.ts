@@ -26,9 +26,13 @@ export class EventService {
     async create(idCommunity: number, data: CreateEventDto) {
         await this.communityService.isExistCommunity(idCommunity);
 
-        const address = await this.addressService.create(data.address);
+        if(data.address) {
+            const address = await this.addressService.create(data.address);
+            return await this.eventRepository.create(data.event, idCommunity, address.id);
+        }
+
+        return await this.eventRepository.create(data.event, idCommunity);
         
-        await this.eventRepository.create(data.event, idCommunity, address.id);
 
     }
 

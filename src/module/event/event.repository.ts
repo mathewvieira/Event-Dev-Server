@@ -7,7 +7,7 @@ import { UpdateEventDto } from "./dto/updateEvent.dto";
 export class EventRepository {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async create(data: EventDto, idCommunity, idAddress) {
+    async create(data: EventDto, idCommunity: number, idAddress?: number) {
         await this.prismaService.event.create({data: {
             ...data,
             id_address: idAddress,
